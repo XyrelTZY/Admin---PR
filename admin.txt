@@ -1,0 +1,55 @@
+-- Create the database
+CREATE DATABASE admin_dashboard;
+USE admin_dashboard;
+
+-- Table for storing user accounts
+CREATE TABLE users (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    username VARCHAR(50) NOT NULL UNIQUE,
+    password_hash VARCHAR(255) NOT NULL,
+    role ENUM('admin', 'user') DEFAULT 'user',
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
+-- Table for storing student records
+CREATE TABLE students (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    user_id INT, -- Foreign key to link student with a user
+    track VARCHAR(50),
+    grade_level INT,
+    status ENUM('Active', 'Inactive') DEFAULT 'Active',
+    expelled ENUM('Yes', 'No') DEFAULT 'No',
+    community_service VARCHAR(255),
+    date DATE,
+    FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE SET NULL
+);
+
+-- Table for storing transferee records
+CREATE TABLE transferees (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    student_id INT, -- Foreign key to link transferee with a student
+    transfer_date DATE,
+    reason TEXT,
+    FOREIGN KEY (student_id) REFERENCES students(id) ON DELETE CASCADE
+);
+
+-- Table for storing additional profile details
+CREATE TABLE profiles (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    user_id INT, -- Foreign key to link profile with a user
+    profile_picture VARCHAR(255),
+    bio TEXT,
+    FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE
+);
+
+-- Table for storing application settings
+CREATE TABLE settings (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    setting_name VARCHAR(100) UNIQUE,
+    setting_value VARCHAR(255)
+);
+
+-- Insert default settings (optional)
+INSERT INTO settings (setting_name, setting_value) VALUES 
+('site_name', 'Admin Panel'),
+('default_language', 'English');
