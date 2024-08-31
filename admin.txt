@@ -53,3 +53,18 @@ CREATE TABLE settings (
 INSERT INTO settings (setting_name, setting_value) VALUES 
 ('site_name', 'Admin Panel'),
 ('default_language', 'English');
+
+
+
+
+INSERT INTO users (username, password_hash, role) VALUES ('admin', 'hashedpassword123', 'admin');
+
+
+INSERT INTO students (user_id, track, grade_level, status, expelled, community_service, date) VALUES 
+(1, 'Science', 11, 'Active', 'No', '20 hours', '2024-08-31');
+
+
+INSERT INTO transferees (student_id, transfer_date, reason) VALUES (1, '2024-08-31', 'Transfer to another school');
+
+
+SELECT * FROM students WHERE grade_level = 11;
